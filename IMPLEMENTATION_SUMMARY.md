@@ -355,7 +355,7 @@ All endpoints include:
 
 ### Docker Compose
 ```bash
-git clone https://github.com/yourusername/db-backup.git
+git clone https://github.com/SathiraSriSathsara/SnapDB.git
 cd db-backup
 docker-compose up -d
 ```

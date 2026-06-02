@@ -80,7 +80,7 @@ A production-ready, Docker-supported web-based Database Backup Management Platfo
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/db-backup.git
+git clone https://github.com/SathiraSriSathsara/SnapDB.git
 cd db-backup
 ```
 

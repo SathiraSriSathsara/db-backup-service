@@ -3,7 +3,7 @@ import {
   Grid, Paper, Typography, Box, Card, CardContent, LinearProgress,
 } from '@mui/material';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { backupJobApi } from '../services/apiService';
+import { backupJobApi, databaseServerApi } from '../services/apiService';
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -22,33 +22,66 @@ export default function Dashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
+      
+      // Fetch servers count
+      const serversResponse = await databaseServerApi.getAll(1, 1);
+      const totalServersCount = serversResponse.data.data.total || 0;
+      
       // Fetch all backup jobs to calculate stats
-      const response = await backupJobApi.getAll(1, 100);
-      const jobs = response.data.data.data;
+      const jobsResponse = await backupJobApi.getAll(1, 500);
+      const jobs = jobsResponse.data.data.data || [];
 
       const totalBackups = jobs.length;
+      const successJobs = jobs.filter((j) => j.status === 'SUCCESS').length;
       const failedJobs = jobs.filter((j) => j.status === 'FAILED').length;
-      const successRate = totalBackups > 0 ? Math.round(((totalBackups - failedJobs) / totalBackups) * 100) : 0;
+      const successRate = totalBackups > 0 ? Math.round((successJobs / totalBackups) * 100) : 0;
 
       setStats({
-        totalServers: 0,
+        totalServers: totalServersCount,
         totalBackups,
         successRate,
         failedJobs,
       });
 
-      // Generate chart data
+      // Generate real chart data from jobs, grouped by date
+      const dateMap = {};
+      
+      jobs.forEach((job) => {
+        const date = new Date(job.startedAt);
+        const dateStr = date.toLocaleDateString();
+        
+        if (!dateMap[dateStr]) {
+          dateMap[dateStr] = {
+            date: dateStr,
+            backups: 0,
+            failed: 0,
+          };
+        }
+        
+        if (job.status === 'SUCCESS') {
+          dateMap[dateStr].backups += 1;
+        } else if (job.status === 'FAILED') {
+          dateMap[dateStr].failed += 1;
+        }
+      });
+
+      // Get last 7 days and fill missing dates with 0
       const last7Days = [];
       for (let i = 6; i >= 0; i -= 1) {
         const date = new Date();
         date.setDate(date.getDate() - i);
-        last7Days.push({
-          date: date.toLocaleDateString(),
-          backups: Math.floor(Math.random() * 10),
-          failed: Math.floor(Math.random() * 3),
+        const dateStr = date.toLocaleDateString();
+        
+        last7Days.push(dateMap[dateStr] || {
+          date: dateStr,
+          backups: 0,
+          failed: 0,
         });
       }
+      
       setChartData(last7Days);
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err);
     } finally {
       setLoading(false);
     }
@@ -96,7 +129,12 @@ export default function Dashboard() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="backups" stroke="#1976d2" />
+                <Line 
+                  type="monotone" 
+                  dataKey="backups" 
+                  stroke="#1976d2"
+                  name="Successful Backups"
+                />
               </LineChart>
             </ResponsiveContainer>
           </Paper>
@@ -112,8 +150,8 @@ export default function Dashboard() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="backups" fill="#388e3c" />
-                <Bar dataKey="failed" fill="#d32f2f" />
+                <Bar dataKey="backups" fill="#388e3c" name="Successful" />
+                <Bar dataKey="failed" fill="#d32f2f" name="Failed" />
               </BarChart>
             </ResponsiveContainer>
           </Paper>

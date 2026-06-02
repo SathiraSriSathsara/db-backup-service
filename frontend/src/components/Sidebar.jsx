@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Drawer, List, ListItem, ListItemIcon, ListItemText, Divider,
+  Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Box, Typography,
 } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -25,6 +25,25 @@ export default function Sidebar() {
 
   return (
     <Drawer variant="permanent" sx={{ width: 240, '& .MuiDrawer-paper': { width: 240 } }}>
+      {/* Logo and App Name */}
+      <Box
+        sx={{
+          p: 2,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1.5,
+          cursor: 'pointer',
+          '&:hover': { opacity: 0.8 },
+        }}
+        onClick={() => navigate('/dashboard')}
+      >
+        <img src="/logo.png" alt="SnapDB" style={{ width: 40, height: 40 }} />
+        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+          SnapDB
+        </Typography>
+      </Box>
+      <Divider />
+
       <List>
         {menuItems.map((item) => (
           <ListItem

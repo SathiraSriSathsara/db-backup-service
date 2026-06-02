@@ -27,11 +27,8 @@ export default function Header() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          DB Backup Manager
-        </Typography>
         {user && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, ml: 'auto' }}>
             <Typography variant="body2">{user.email}</Typography>
             <Avatar
               sx={{ cursor: 'pointer' }}

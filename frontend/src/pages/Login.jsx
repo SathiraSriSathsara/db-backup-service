@@ -41,7 +41,9 @@ export default function Login() {
   return (
     <Container maxWidth="sm">
       <Box sx={{ mt: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography variant="h4" gutterBottom>DB Backup Manager</Typography>
+        <Box sx={{ mb: 4 }}>
+          <img src="/logo-login.png" alt="SnapDB" style={{ maxWidth: '300px', width: '100%', height: 'auto' }} />
+        </Box>
         <Paper sx={{ p: 4, width: '100%' }}>
           <Typography variant="h6" gutterBottom>Login</Typography>
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}

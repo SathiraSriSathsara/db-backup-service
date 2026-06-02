@@ -24,7 +24,7 @@ export default function Dashboard() {
       setLoading(true);
       // Fetch all backup jobs to calculate stats
       const response = await backupJobApi.getAll(1, 100);
-      const jobs = response.data.data;
+      const jobs = response.data.data.data;
 
       const totalBackups = jobs.length;
       const failedJobs = jobs.filter((j) => j.status === 'FAILED').length;

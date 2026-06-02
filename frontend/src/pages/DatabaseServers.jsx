@@ -26,7 +26,7 @@ export default function DatabaseServers() {
     try {
       setLoading(true);
       const response = await databaseServerApi.getAll();
-      setServers(response.data.data);
+      setServers(response.data.data.data);
       setError('');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch servers');

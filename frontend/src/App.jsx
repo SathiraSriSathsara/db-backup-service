@@ -9,6 +9,12 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import DatabaseServers from './pages/DatabaseServers';
+import BackupSchedules from './pages/BackupSchedules';
+import BackupHistory from './pages/BackupHistory';
+import StorageProviders from './pages/StorageProviders';
+import Users from './pages/Users';
+import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 
 export default function App() {
   return (
@@ -32,6 +38,66 @@ export default function App() {
               <ProtectedRoute>
                 <Layout>
                   <DatabaseServers />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/backup-schedules"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BackupSchedules />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/backup-history"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BackupHistory />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/storage-providers"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <StorageProviders />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Users />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Settings />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Profile />
                 </Layout>
               </ProtectedRoute>
             }

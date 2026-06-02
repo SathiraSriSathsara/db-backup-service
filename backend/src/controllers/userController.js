@@ -3,7 +3,8 @@ import { asyncHandler } from '../utils/errorHandler.js';
 
 export const userController = {
   getAll: asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const page = Math.max(1, parseInt(req.query.page || 1, 10));
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit || 10, 10)));
     const result = await userService.getAllUsers(page, limit);
 
     res.json({

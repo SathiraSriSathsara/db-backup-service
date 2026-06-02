@@ -3,7 +3,9 @@ import { asyncHandler } from '../utils/errorHandler.js';
 
 export const backupJobController = {
   getAll: asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10, serverId, status } = req.query;
+    const page = Math.max(1, parseInt(req.query.page || 1, 10));
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit || 10, 10)));
+    const { serverId, status } = req.query;
     const filters = { serverId, status };
 
     const result = await backupJobService.getAllJobs(page, limit, filters);
@@ -24,7 +26,8 @@ export const backupJobController = {
   }),
 
   getByServer: asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const page = Math.max(1, parseInt(req.query.page || 1, 10));
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit || 10, 10)));
     const result = await backupJobService.getJobsByServer(req.params.serverId, page, limit);
 
     res.json({

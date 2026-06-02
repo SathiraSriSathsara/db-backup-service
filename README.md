@@ -1,4 +1,11 @@
-# Database Backup Management Platform
+<p align="center">
+  <img src="./resources/logo-readme.png"  width="150px" />
+  <br>
+   <b>Database Backup Management Platform</b>
+</p>
+<hr>
+
+<img src="./resources/image.png" alt="screenshot">
 
 A production-ready, Docker-supported web-based Database Backup Management Platform that allows administrators to register database servers, configure backup schedules, execute manual backups, monitor backup jobs, and manage backup storage.
 
